@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  tyk-gateway:
+    image: tykio/tyk-gateway:latest
+    ports:
+    - "8080:8080"
+    networks:
+    - tyk
+    volumes:
+    - ./confs/tyk.standalone.conf:/opt/tyk-gateway/tyk.conf
+    - ./apps:/opt/tyk-gateway/apps
+    depends_on:
+    - tyk-redis
+  tyk-redis:
+    image: redis
+    ports:
+    - "6379:6379"
+    volumes:
+    - redis-data:/data
+    networks:
+    - tyk
+
+volumes:
+  redis-data:
+
+networks:
+  tyk:
